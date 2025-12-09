@@ -1,0 +1,16 @@
+name = "mock-api-server"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+ADMIN_USERNAME = "kenfei"
+# 请在部署时通过 wrangler secret 设置密码
+# wrangler secret put ADMIN_PASSWORD
+# wrangler secret put JWT_SECRET
+
+[[kv_namespaces]]
+binding = "MOCK_KV"
+id = "c31ff2e799ca4438a1063d863f633574"
+
+[site]
+bucket = "./public"

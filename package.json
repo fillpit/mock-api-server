@@ -1,0 +1,28 @@
+{
+    "name": "mock-api-server",
+    "version": "1.0.0",
+    "description": "Configurable Mock API Server with Web UI, supports Cloudflare Workers and Docker",
+    "type": "module",
+    "scripts": {
+        "dev": "npm run build && node --watch dist/node.js",
+        "start": "node dist/node.js",
+        "dev:worker": "wrangler dev",
+        "build": "tsc",
+        "deploy": "wrangler deploy",
+        "docker:build": "docker build -t mock-api-server .",
+        "docker:run": "docker run -p 3000:3000 mock-api-server"
+    },
+    "dependencies": {
+        "@hono/node-server": "^1.13.0",
+        "hono": "^4.6.0"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20241127.0",
+        "@types/node": "^24.10.2",
+        "typescript": "^5.6.0",
+        "wrangler": "^3.91.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

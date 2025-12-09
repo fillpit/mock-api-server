@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock API Server - 管理控制台</title>
+    <meta name="description" content="可配置的 Mock API 服务,支持 Web 界面管理接口">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Page -->
+        <div id="login-page" class="page">
+            <div class="login-container">
+                <div class="login-card glass-card">
+                    <div class="login-header">
+                        <div class="logo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h1>Mock API Server</h1>
+                        <p>可配置的 Mock API 服务</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username">用户名</label>
+                            <input type="text" id="username" name="username" required autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label>
+                            <input type="password" id="password" name="password" required autocomplete="current-password">
+                        </div>
+                        <div id="login-error" class="error-message hidden"></div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <span>登录</span>
+                            <svg class="loading-spinner hidden" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 70"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard" class="page hidden">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo-small">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <span>Mock API</span>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#projects" class="nav-item active" data-page="projects">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/>
+                        </svg>
+                        <span>项目管理</span>
+                    </a>
+                    <a href="#endpoints" class="nav-item" data-page="endpoints">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6"/>
+                        </svg>
+                        <span>接口配置</span>
+                    </a>
+                    <a href="#settings" class="nav-item" data-page="settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span>全局设置</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="logout-btn" class="btn btn-ghost btn-block">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                        </svg>
+                        <span>退出登录</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Projects Page -->
+                <div id="projects-page" class="content-page">
+                    <div class="page-header">
+                        <h2>项目管理</h2>
+                        <button id="add-project-btn" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                            <span>新建项目</span>
+                        </button>
+                    </div>
+                    <div id="projects-list" class="card-grid">
+                        <!-- Projects will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Endpoints Page -->
+                <div id="endpoints-page" class="content-page hidden">
+                    <div class="page-header">
+                        <div class="page-header-left">
+                            <h2>接口配置</h2>
+                            <select id="project-filter" class="select">
+                                <option value="">全部项目</option>
+                            </select>
+                        </div>
+                        <button id="add-endpoint-btn" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                            <span>新建接口</span>
+                        </button>
+                    </div>
+                    <div id="endpoints-list" class="table-container">
+                        <!-- Endpoints will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settings-page" class="content-page hidden">
+                    <div class="page-header">
+                        <h2>全局设置</h2>
+                    </div>
+                    <div class="settings-container">
+                        <form id="settings-form" class="settings-form glass-card">
+                            <div class="form-section">
+                                <h3>CORS 配置</h3>
+                                <div class="form-group">
+                                    <label for="cors-origins">允许的来源 (每行一个)</label>
+                                    <textarea id="cors-origins" rows="4" placeholder="*&#10;http://localhost:3000&#10;https://example.com"></textarea>
+                                    <small>使用 * 允许所有来源</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cors-headers">允许的请求头 (每行一个)</label>
+                                    <textarea id="cors-headers" rows="4" placeholder="Content-Type&#10;Authorization&#10;X-Requested-With"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cors-methods">允许的方法 (每行一个)</label>
+                                    <textarea id="cors-methods" rows="4" placeholder="GET&#10;POST&#10;PUT&#10;DELETE"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-section">
+                                <h3>默认响应头</h3>
+                                <div id="default-headers-container">
+                                    <!-- Headers will be rendered here -->
+                                </div>
+                                <button type="button" id="add-header-btn" class="btn btn-outline btn-sm">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 5v14M5 12h14"/>
+                                    </svg>
+                                    <span>添加请求头</span>
+                                </button>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">保存设置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modals -->
+        <div id="modal-overlay" class="modal-overlay hidden">
+            <div id="modal" class="modal glass-card">
+                <div class="modal-header">
+                    <h3 id="modal-title">Modal Title</h3>
+                    <button class="modal-close" id="modal-close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="modal-content" class="modal-content">
+                    <!-- Modal content will be rendered here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <script src="json-editor.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
